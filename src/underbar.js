@@ -243,11 +243,9 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
-    var args = [];
-
-    for (var i = 0; i < arguments.length; i++){
-      args[i] = arguments[i];
-    }
+    var args = [].slice.call(arguments);
+    // '[].slice.call(arguments)' is a shorthand 
+    // for 'Array.prototype.slice.call(arguments)'
 
     _.each(args, function(arg){
       _.each(arg, function (value, key){
@@ -273,11 +271,8 @@
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
-    var args = [];
+    var args = [].slice.call(arguments);
 
-    for (var i = 0; i < arguments.length; i++){
-      args[i] = arguments[i];
-    }
     _.each(args, function(arg){
       _.each(arg, function (value, key){
         if (!(key in obj)){
@@ -332,13 +327,7 @@
     var alreadyCalled = {};
 
     return function(){
-      var args = [];
-
-      for (var i = 0; i < arguments.length; i++){
-        args[i] = arguments[i];
-      }
-
-      var key = args.toString();
+      var key = [].slice.call(arguments).toString();
 
       if (!(key in alreadyCalled)){
         alreadyCalled[key] = func.apply(this, arguments);
@@ -354,11 +343,7 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
-    var args = [];
-
-    for (var i = 2; i < arguments.length; i++){
-      args[i-2] = arguments[i];
-    }
+    var args = [].slice.call(arguments, 2);
 
     setTimeout(function(){
       func.apply(this, args)} , wait);
