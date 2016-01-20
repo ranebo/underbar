@@ -151,19 +151,19 @@
   // Reduces an array or object to a single value by repetitively calling
   // iterator(accumulator, item) for each item. accumulator should be
   // the return value of the previous iterator call.
-  //  
+  //
   // You can pass in a starting value for the accumulator as the third argument
   // to reduce. If no starting value is passed, the first element is used as
   // the accumulator, and is never passed to the iterator. In other words, in
   // the case where a starting value is not passed, the iterator is not invoked
   // until the second element, with the first element as its second argument.
-  //  
+  //
   // Example:
   //   var numbers = [1,2,3];
   //   var sum = _.reduce(numbers, function(total, number){
   //     return total + number;
   //   }, 0); // should be 6
-  //  
+  //
   //   var identity = _.reduce([5], function(total, number){
   //     return total + number * number;
   //   }); // should be 5, regardless of the iterator function passed in
@@ -244,7 +244,7 @@
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
     var args = [].slice.call(arguments);
-    // '[].slice.call(arguments)' is a shorthand 
+    // '[].slice.call(arguments)' is a shorthand
     // for 'Array.prototype.slice.call(arguments)'
 
     _.each(args, function(arg){
@@ -333,7 +333,7 @@
         alreadyCalled[key] = func.apply(this, arguments);
       }
       return alreadyCalled[key];
-    }
+    };
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -346,7 +346,8 @@
     var args = [].slice.call(arguments, 2);
 
     setTimeout(function(){
-      func.apply(this, args)} , wait);
+      func.apply(this, args);
+    } , wait);
   };
 
 
@@ -386,6 +387,13 @@
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
+    var result = [];
+
+    _.each(collection, function(item) {
+      result.push(typeof functionOrKey === "function" ? functionOrKey.apply(item, args) : item[functionOrKey].apply(item));
+    });
+
+    return result;
   };
 
   // Sort the object's values by a criterion produced by an iterator.
