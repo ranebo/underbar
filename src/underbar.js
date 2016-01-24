@@ -486,5 +486,32 @@
   //
   // Note: This is difficult! It may take a while to implement.
   _.throttle = function(func, wait) {
+/*
+ FIRST ATTEMPT:
+ -Says it was called thrice when supposed to be called twice??
+ -Have not accounted for scheduling calls in the middle of wait period:
+  (100ms(wait) - 30ms(called after first call) = should schedule for 70ms)
+ - Look into 'new Date' for scheduling
+*/
+    var args = [].slice.call(arguments, 2);
+    var called = false;
+    var waitOver = true;
+    var result;
+
+    return function(){
+      if (called) {
+        waitOver = false;
+        called = false;
+        setTimeout(function(){
+          waitOver = true;
+          result = func.apply(this, args);
+        }, wait);
+      } else if (waitOver) {
+        called = true;
+        result = func.apply(this, args);
+      }
+
+      return result;
+    };
   };
 }());
