@@ -468,6 +468,16 @@
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   _.difference = function(array) {
+    var result = [];
+    var flatArgs = _.flatten([].slice.call(arguments, 1));
+
+    _.each(array, function(target){
+      if (!_.contains(flatArgs, target)){
+        result.push(target);
+      }
+    });
+
+    return result;
   };
 
   // Returns a function, that, when invoked, will only be triggered at most once
